@@ -1,0 +1,1 @@
+# interseguro-challenge-statistic

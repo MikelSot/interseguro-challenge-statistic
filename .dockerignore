@@ -1,0 +1,12 @@
+node_modules
+build
+.yarn
+.idea
+coverage
+*.log
+.DS_Store
+.git
+.gitignore
+docker-compose.yml
+Dockerfile
+README.md

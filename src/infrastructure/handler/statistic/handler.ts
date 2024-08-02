@@ -26,7 +26,7 @@ class StatisticHandler {
     try {
       const statistic = await this.useCase.Statistic(payload)
 
-      return res.status(200).json({ data: statistic })
+      return res.status(200).json({ ...statistic })
     } catch (error) {
       console.warn('Error', error)
 

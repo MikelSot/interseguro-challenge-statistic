@@ -1,7 +1,9 @@
 import { Request, Response } from 'express'
 import UseCase from '@domain/statistic/statistic'
-import Matrix from '@model/matrix'
+import QR from '@model/qr'
 import { MessageResponse } from '@model/response'
+
+import ErrorResponse from '../../../domain/error/error'
 
 class StatisticHandler {
   private useCase: UseCase
@@ -10,10 +12,10 @@ class StatisticHandler {
     this.useCase = useCase
   }
 
-  FactorizeQR = async (req: Request, res: Response) => {
-    const payload: Matrix = req.body
+  Statistic = async (req: Request, res: Response) => {
+    const payload: QR = req.body
 
-    if (!payload || !payload.matrix) {
+    if (!payload || !payload) {
       const responseError: MessageResponse = {
         errors: [{ code: 'InvalidPayload', message: '¡Uy! la matriz no es válida' }],
       }
@@ -22,11 +24,19 @@ class StatisticHandler {
     }
 
     try {
-      const factorizedQR = await this.useCase.FactorizeQR(payload.matrix)
+      const statistic = await this.useCase.Statistic(payload)
 
-      return res.status(200).json({ data: factorizedQR })
+      return res.status(200).json({ data: statistic })
     } catch (error) {
-      console.warn('QR UseCase error:', error)
+      console.warn('Error', error)
+
+      if (error instanceof ErrorResponse) {
+        const responseError: MessageResponse = {
+          errors: [{ code: error.name, message: error.message }],
+        }
+
+        return res.status(400).json(responseError)
+      }
 
       const responseError: MessageResponse = {
         errors: [{ code: 'Failure', message: 'Error al factorizar la matriz' }],

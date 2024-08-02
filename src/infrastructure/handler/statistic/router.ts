@@ -4,8 +4,9 @@ import RouteSpecification from '@model/route-specification'
 
 import StatisticHandler from './handler'
 import StatisticUseCase from '../../../domain/statistic/usecase'
+import MatrixUseCase from '../../../domain/matrix/usecase'
 
-const _privateRoutePrefix = '/qr/api/v1/factorize'
+const _privateRoutePrefix = '/statistic/api/v1/'
 
 const NewRouter = (spec: RouteSpecification) => {
   const handler = buildHandler()
@@ -14,13 +15,14 @@ const NewRouter = (spec: RouteSpecification) => {
 }
 
 const buildHandler = (): StatisticHandler => {
-  const useCase = new StatisticUseCase()
+  const matrixUseCase = new MatrixUseCase()
+  const useCase = new StatisticUseCase(matrixUseCase)
 
   return new StatisticHandler(useCase)
 }
 
 const privateRoute = (app: Application, handler: StatisticHandler) => {
-  app.post(_privateRoutePrefix, handler.FactorizeQR)
+  app.post(_privateRoutePrefix, handler.Statistic)
 }
 
 export default NewRouter

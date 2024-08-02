@@ -1,7 +1,8 @@
 import QR from '@model/qr'
+import { Statistics } from '@model/statistic'
 
 interface UseCase {
-  FactorizeQR(matrix: number[][]): Promise<QR>
+  Statistic(data: QR): Promise<Statistics>
 }
 
 export default UseCase
